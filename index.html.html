@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Para Você ❤️</title>
+
+<style>
+body{
+text-align:center;
+font-family:Arial;
+background:#ffdde1;
+overflow:hidden;
+}
+
+button{
+padding:15px 30px;
+font-size:20px;
+border:none;
+border-radius:10px;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+}
+
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:white;
+padding:20px;
+border-radius:15px;
+max-width:320px;
+}
+
+.modal img{
+max-width:100%;
+border-radius:10px;
+}
+
+#mensagem{
+margin-top:15px;
+font-size:18px;
+min-height:40px;
+}
+
+.heart{
+position:fixed;
+top:-10px;
+font-size:20px;
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+to{
+transform:translateY(100vh);
+}
+}
+
+.fechar{
+float:right;
+font-size:25px;
+cursor:pointer;
+}
+
+.explode-heart{
+position:absolute;
+font-size:20px;
+pointer-events:none;
+animation:explode 1s forwards;
+}
+
+@keyframes explode{
+0%{
+transform:translate(0,0) scale(1);
+opacity:1;
+}
+100%{
+transform:translate(var(--x), var(--y)) scale(0.5);
+opacity:0;
+}
+}
+</style>
+</head>
+
+<body>
+
+<h2>Tenho uma surpresa para você ❤️</h2>
+
+<button id="botao" onclick="abrirModal()">Clique aqui</button>
+
+<div id="modal" class="modal">
+<div class="modal-content">
+
+<span class="fechar" onclick="fecharModal()">✖</span>
+
+<img src="foto.jpg">
+
+<p id="mensagem"></p>
+
+</div>
+</div>
+
+<audio id="musica" src="musica.mp3"></audio>
+
+<script>
+
+function explosaoCoracoes(){
+
+const botao = document.getElementById("botao");
+const rect = botao.getBoundingClientRect();
+
+for(let i=0;i<20;i++){
+
+const heart = document.createElement("div");
+heart.classList.add("explode-heart");
+heart.innerHTML = "❤️";
+
+heart.style.left = rect.left + rect.width/2 + "px";
+heart.style.top = rect.top + rect.height/2 + "px";
+
+heart.style.setProperty("--x",(Math.random()*200-100)+"px");
+heart.style.setProperty("--y",(Math.random()*200-100)+"px");
+
+document.body.appendChild(heart);
+
+setTimeout(()=>{
+heart.remove();
+},1000);
+
+}
+
+}
+
+/* abrir modal */
+function abrirModal(){
+
+explosaoCoracoes();
+
+setTimeout(()=>{
+
+document.getElementById("modal").style.display="flex";
+document.getElementById("musica").play();
+
+digitarMensagem();
+
+},600);
+
+}
+
+/* fechar modal */
+function fecharModal(){
+document.getElementById("modal").style.display="none";
+}
+
+/* efeito digitando */
+
+const texto = "Você é a melhor coisa que aconteceu na minha vida ❤️";
+
+let i = 0;
+
+function digitarMensagem(){
+
+if(i < texto.length){
+
+document.getElementById("mensagem").innerHTML += texto.charAt(i);
+
+i++;
+
+setTimeout(digitarMensagem,60);
+
+}
+
+}
+
+/* corações caindo */
+
+function criarCoracao(){
+
+const heart = document.createElement("div");
+
+heart.classList.add("heart");
+
+heart.innerHTML = "❤️";
+
+heart.style.left = Math.random()*100 + "vw";
+
+heart.style.animationDuration = (Math.random()*3+2) + "s";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>{
+heart.remove();
+},5000);
+
+}
+
+setInterval(criarCoracao,300);
+
+</script>
+
+</body>
+</html>
